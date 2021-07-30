@@ -35,7 +35,8 @@ ECE692 Embedded Computing Systems - Embedded System Project
 	3. Buzzer Alarm Module
 
 
-### Programming Language: 
+## <ins>**Programming Language:**</ins>
 C++
-### IDE: 
+## <ins>**IDE:**</ins>
 CLion, MBED
+
