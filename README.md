@@ -31,5 +31,9 @@ at home which will prevent any major loss of life or property.
 • Also, the neighbors are notified which can in return help those
 who are in need and can even take precautionary actions.
 
-## **Componants:**
-<ins> text </ins>
+## <ins>**Componants:**</ins>
+*	Transmitter
+
+*	Receiver
+
+*	Alert System
