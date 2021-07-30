@@ -4,12 +4,6 @@ ECE692 Embedded Computing Systems - Embedded System Project
 ## Contents
 * Introduction
 * Componants
-* Setup
-* Results
-* Demonstration
-* Data Analysis of Weather Station Feed
-* Weather Station GUI / Monitor
-
 
 ## <ins>**Introduction:**</ins>
 ### _Remote Monitoring Base Station_
