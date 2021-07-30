@@ -33,3 +33,9 @@ ECE692 Embedded Computing Systems - Embedded System Project
 	1. Arduino Mega 2560
 	2. SIM800L Module
 	3. Buzzer Alarm Module
+
+
+### Programming Language: 
+C++
+### IDE: 
+CLion, MBED
