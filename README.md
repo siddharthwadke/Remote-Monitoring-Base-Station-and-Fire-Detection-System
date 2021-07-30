@@ -33,18 +33,18 @@ who are in need and can even take precautionary actions.
 
 ## <ins>**Componants:**</ins>
 *	Transmitter
-		1. FRDM KL25Z
-		2. nRF24L01+
-		3. DHT11 Temperature Humidity Sensor
-		4. MQ135 Air Quality Sensor
-		5. MQ4 Gas (CH4, LPG) Sensor
+	1. FRDM KL25Z
+	2. nRF24L01+
+	3. DHT11 Temperature Humidity Sensor
+	4. MQ135 Air Quality Sensor
+	5. MQ4 Gas (CH4, LPG) Sensor
 
 
 *	Receiver
-		1. FRDM KL25Z
-		2. nRF24L01+
+	1. FRDM KL25Z
+	2. nRF24L01+
 
 *	Alert System
-		1. Arduino Mega 2560
-		2. SIM800L Module
-		3. Buzzer Alarm Module
+	1. Arduino Mega 2560
+	2. SIM800L Module
+	3. Buzzer Alarm Module
