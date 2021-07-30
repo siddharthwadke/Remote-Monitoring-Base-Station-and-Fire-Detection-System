@@ -11,7 +11,7 @@ ECE692 Embedded Computing Systems - Embedded System Project
 * Weather Station GUI / Monitor
 
 
-## *Introduction:*
+## **Introduction:**
 ### _Remote Monitoring Base Station_
 • Monitor environmental parameters like Temperature and
 Relative Humidity, Air Quality parameters like CO 2 and CO
@@ -30,3 +30,6 @@ neighbors for Fire Alert through SMS.
 at home which will prevent any major loss of life or property.
 • Also, the neighbors are notified which can in return help those
 who are in need and can even take precautionary actions.
+
+## **Componants:**
+<ins> text </ins>
