@@ -1,0 +1,171 @@
+//ECEProject_SiddharthWadke_TXv1.1.cpp
+
+#include "mbed.h"
+#include "nRF24L01P.h"
+#include "Dht11.h"  
+#include "MQ4.h"
+#include "mq135.h"
+//#include "MQ135.h"
+//#include "string.h"
+
+Serial pc(USBTX, USBRX); // tx, rx serial monitor
+//Sensors pins
+Dht11 sensor(PTD7);
+MQ4 mq4(PTB3); 
+MQ135 sensorMQ135(PTB0);
+nRF24L01P my_nrf24l01p(PTD2, PTD3, PTD1, PTD0, PTD5, PTD4); //RF module pin irq , ce, csn, sck, miso, mosi
+DigitalOut RedLED(LED1);
+//AnalogIn sensorMQ135(PTB3);
+
+int main()
+{
+    //char dataH2[1];
+    //char dataCH4[1];
+    char dataLPG[1];
+    char countTemp[1];
+    char countHumid[1];
+    char countMQ135[1];
+    //float countMQ135;
+    char txBytes1;
+    //char txBytes3;
+    char temp;
+    char temperatureValue;
+    char humidityValue;
+    float mq135Value;
+    char lpgValue;
+
+
+    //set tx and rx address PIPE0
+    long long TxAddress_PIPE0 = 0xC2C2C2C2C2;
+    long long RxAddress_PIPE0 = 0xC2C2C2C2C2;
+
+    my_nrf24l01p.powerUp();
+    my_nrf24l01p.setRfFrequency(2492);
+
+    //setting tx address PIPE0
+    my_nrf24l01p.setTxAddress(TxAddress_PIPE0);
+
+    //setting rx address PIPE0
+    my_nrf24l01p.setRxAddress(RxAddress_PIPE0, DEFAULT_NRF24L01P_ADDRESS_WIDTH, NRF24L01P_PIPE_P0);
+
+    // Display the (default) setup of the nRF24L01+ chip
+    pc.printf( "Frequency : %d MHz\r\n", my_nrf24l01p.getRfFrequency() );
+    pc.printf( "Output power : %d dBm\r\n", my_nrf24l01p.getRfOutputPower() );
+    pc.printf( "Data Rate : %d kbps\r\n", my_nrf24l01p.getAirDataRate() );
+    pc.printf( "TX Address : 0x%010llX\r\n", my_nrf24l01p.getTxAddress() );
+    
+    pc.printf( "Transmitter Connected\r\n");
+    
+    txBytes1 = 1;
+    //txBytes3 = 3;
+    
+    my_nrf24l01p.setTransferSize(txBytes1, NRF24L01P_PIPE_P0);
+    my_nrf24l01p.enable();
+    
+ 
+    while (1) {
+        
+        pc.printf("\n\n.............Reading Sensor Values..............\r\n");  
+    
+        
+        //MQ4_data_t MQ4_data;
+        //pc.printf("Ro calculated: %f\r\n",mq4.get_Ro()); 
+        
+        //pc.printf("H2 PPM: %.0f\r\n",mq4.readH2());  
+        //pc.printf("CH4 PPM: %.0f\r\n",(mq4.readCH4()));
+        //pc.printf("LPG PPM: %.0f\r\n",(mq4.readLPG()));
+        pc.printf("MQ4 Gas Sensor (LPG): %.0f\r\n",(mq4.readLPG()));
+        
+        //pc.printf("LPG PPM: %d\r\n",mq4.read());
+        
+        pc.printf("................................\r\n");                                     
+        
+        ///mq135 sensor - detects air quality
+        //pc.printf("MQ135 Sensor: %f\n\r", sensorMQ135.read()*3.3)-0,4919879;
+        pc.printf("MQ135 sensor Value (Air Quality): %f\n\r", sensorMQ135.getPPM());
+        
+        pc.printf("................................\r\n");
+        
+        ///dht11 sensors - senses temperature and humidity
+        sensor.read();
+
+        //pc.printf("Temperature in Fahrenheit : %f%\r\n", sensor.getFahrenheit());
+        //pc.printf("Humidity : %d%\r\n", sensor.getHumidity());
+        //wait(1);
+        
+        
+        //assign value
+        
+        temperatureValue = sensor.getFahrenheit();
+        //temperatureValue = sensor.getCelsius();
+        humidityValue = sensor.getHumidity();
+        mq135Value = sensorMQ135.getPPM();
+        pc.printf("MQ135 %f\n\r",mq135Value);
+        
+        if (mq135Value > 600 and mq135Value < 1250 ){
+            pc.printf("Clean Air \n\r");
+            //mq135Value = mq135Value/5;
+        }
+        else if (mq135Value > 1250 and mq135Value < 2500 ){
+            pc.printf("Air with a little CO2 \n\r");
+            //mq135Value = mq135Value/5;
+        }
+        else if (mq135Value > 2500 and mq135Value < 3500 ){
+            pc.printf("Carbon dioxide CO2 detected \n\r");
+            //mq135Value = mq135Value/5;
+        }
+        else if (mq135Value > 3500){
+            pc.printf("Butane Propane Detected  \n\r");
+            //mq135Value = mq135Value/5;
+        }
+        pc.printf("................................\r\n");
+        
+        //h2Value = mq4.readH2();
+        ///ch4Value = mq4.readCH4();
+        lpgValue = mq4.readLPG();     
+        
+        
+        countTemp[0] = temperatureValue;        
+        countHumid[0] = humidityValue;
+        dataLPG[0] = lpgValue;
+
+    
+        //transmit on specified pipe         
+        //pc.printf( "Sending %d bytes from Transmitter FRDM Board to Receiver FRDM Board through PIPE0; Temperature = %d\r\n",temp,countTemp[0]);
+
+        //temperature
+        temp = my_nrf24l01p.write( NRF24L01P_PIPE_P0,countTemp, txBytes1);
+        pc.printf( "---Value Txd: Temperature= %d\r\n", countTemp[0]);
+        wait(2);
+        
+        //humidity
+        temp = my_nrf24l01p.write( NRF24L01P_PIPE_P0,countHumid, txBytes1);
+        pc.printf( "---Value Txd: Humidity= %d\r\n",countHumid[0]);
+        wait(2);
+        
+        //mq4
+        temp = my_nrf24l01p.write( NRF24L01P_PIPE_P0,dataLPG, txBytes1);
+        pc.printf( "---Value Txd: MQ4 (LPG) = %d\r\n",dataLPG[0]);
+        wait(2);
+        pc.printf("................................\r\n");
+        
+        //mq135
+        if (mq135Value > 2000){
+            mq135Value = mq135Value/20;
+            countMQ135[0] = (mq135Value);
+            //pc.printf("mq135Value12121212 %f\n\r",mq135Value);
+            //pc.printf( "countMQ135 = %d\r\n",countMQ135[0]);
+            
+            //mq135
+            temp = my_nrf24l01p.write( NRF24L01P_PIPE_P0,countMQ135, txBytes1);
+            pc.printf( "---Value Txd: MQ135 = %d\r\n",countMQ135[0]);
+            wait(2);
+        }
+        
+        pc.printf( "Bytes = %d;\r\n",temp);
+        
+        // Toggle LED1 (to help debug Host -> nRF24L01+ communication)
+        RedLED = !RedLED;
+        wait_ms(1500);
+    }
+}
