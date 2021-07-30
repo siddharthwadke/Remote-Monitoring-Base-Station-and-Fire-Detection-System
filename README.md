@@ -11,7 +11,7 @@ ECE692 Embedded Computing Systems - Embedded System Project
 * Weather Station GUI / Monitor
 
 
-## **Introduction:**
+## <ins>**Introduction:**</ins>
 ### _Remote Monitoring Base Station_
 • Monitor environmental parameters like Temperature and
 Relative Humidity, Air Quality parameters like CO 2 and CO
